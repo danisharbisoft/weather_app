@@ -1,4 +1,3 @@
-
 def weather_in_year_report(highest_temp_data, highest_humidity_data, lowest_temp_data, lowest_humidity_data):
     # Getting information for the highest temperature
     highest_temp_reading = round(highest_temp_data['Max TemperatureC'])
@@ -33,19 +32,19 @@ def weather_in_month_report(avg_highest_temperature_value, avg_lowest_temperatur
             )
 
 
-def weather_each_day_report(temp_data_each_day):
+def weather_each_day_report(temp_data_each_day, bonus):
     days = []
     for index, day in temp_data_each_day.iterrows():
         day_max = round(day['Max TemperatureC'])
         day_max_date = day['PKT']
         day_min = round(day['Min TemperatureC'])
         day_min_date = day['PKT']
-        days.append(bar_charts(day_max, day_max_date, day_min, day_min_date))
+        days.append(bar_charts(day_max, day_max_date, day_min, day_min_date, bonus))
 
     return days
 
 
-def bar_charts(day_max, day_max_date, day_min, day_min_date):
+def bar_charts(day_max, day_max_date, day_min, day_min_date, bonus):
     # ANSI escape codes for text colors
     RED = "\033[91m"
     BLUE = "\033[94m"
@@ -62,9 +61,14 @@ def bar_charts(day_max, day_max_date, day_min, day_min_date):
         for y in range(day_min):
             chart2 += '-'
 
-    day_max_info = RED + f"{day_max_date}  {chart1}  {day_max}C" + RESET
-    day_min_info = BLUE + f"{day_min_date}  {chart2}  {day_min}C" + RESET
+    # Checking to see if bonus task is to be displayed
+    if bonus is False:
+        day_max_info = RED + f"{day_max_date}  {chart1}  {day_max}C" + RESET
+        day_min_info = BLUE + f"{day_min_date}  {chart2}  {day_min}C" + RESET
 
-    return (f"{day_max_info}\n"
-            f"{day_min_info}"
-            )
+        return (f"{day_max_info}\n"
+                f"{day_min_info}"
+                )
+    else:
+        each_day_output = f'{day_max_date}  {BLUE}{chart2}{RESET} {RED}{chart1}{RESET} {BLUE}{day_min}C{RESET} - {RED}{day_max}{RESET}C '
+        return each_day_output

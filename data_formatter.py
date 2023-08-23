@@ -3,8 +3,8 @@ import pandas as pd
 from file_mover import move_files
 
 
-def main_conversion():
-    source_directory = '/home/danishabbas/Desktop/weather_files'  # Path of the files in the computer
+def main_conversion(data_dir):
+    source_directory = data_dir  # Path of the files in the computer
     target_directory = './raw_data'  # Directory where you want to move the files.
     target_files = move_files(source_directory, target_directory)
     combined_data_structure = format_files(target_directory, target_files)
@@ -55,9 +55,6 @@ def format_files(target_directory_path, file_list2):  # This function creates a 
     return combined_data
 
 
-def convert_to_datetime(data):
+def convert_to_datetime(data):  # Converts PKT values to datetime
     data['PKT'] = pd.to_datetime(data['PKT'])
     return data
-
-
-

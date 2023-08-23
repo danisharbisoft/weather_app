@@ -1,12 +1,13 @@
-from data_formatter import main_conversion
 from report_generator import weather_in_year_report, weather_in_month_report, weather_each_day_report
+import sys
 
-weather_data = main_conversion()
 
-
-def weather_in_year(date):
+def weather_in_year(weather_data, date):
     filtered_data = weather_data[weather_data['PKT'].dt.year == int(date)]  # Getting data for the year specified
 
+    # Giving error if user doesnt give right year
+    if filtered_data.empty:
+        sys.stderr.write('Error:Data for the given year does not exist')
     # formatting datetime
     filtered_data.loc[:, 'PKT'] = filtered_data['PKT'].dt.strftime('%d %B')
 
@@ -24,9 +25,13 @@ def weather_in_year(date):
     print(report)
 
 
-def weather_in_month(date):
+def weather_in_month(weather_data, date):
     year, month = map(int, date.split('/'))
     filtered_data = weather_data[(weather_data['PKT'].dt.year == year) & (weather_data['PKT'].dt.month == month)]
+
+    # Giving error if user doesnt give right year
+    if filtered_data.empty:
+        sys.stderr.write('Error:Data for the given year/month does not exist')
 
     # Finding the average highest temperature
     avg_highest_temp = round(average(filtered_data, 'Max TemperatureC'))
@@ -43,17 +48,22 @@ def weather_in_month(date):
     print(report)
 
 
-def weather_each_day(date):
+def weather_each_day(weather_data, date,bonus):
     # filtering the data for the required values
     year, month = map(int, date.split('/'))
     filtered_data = weather_data[(weather_data['PKT'].dt.year == year) & (weather_data['PKT'].dt.month == month)]
+
+    # Giving error if user doesnt give right year
+    if filtered_data.empty:
+        sys.stderr.write('Error:Data for the given year/month does not exist')
+
     filtered_data = filtered_data[['PKT', 'Max TemperatureC', 'Min TemperatureC']]
 
     # formatting datetime
     filtered_data.loc[:, 'PKT'] = filtered_data['PKT'].dt.strftime('%d %B')
 
     # Generating report
-    report = weather_each_day_report(filtered_data)
+    report = weather_each_day_report(filtered_data,bonus)
 
     # Printing report for each day
     for each_day in report:
@@ -77,6 +87,3 @@ def lowest_weather_value(filtered_data, search_field):  # This function finds th
 def average(filtered_data, search_field):
     average_value = filtered_data[search_field].mean()
     return average_value
-
-
-weather_each_day('2008/7')
