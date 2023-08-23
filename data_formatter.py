@@ -8,11 +8,10 @@ def main_conversion():
     target_directory = './raw_data'  # Directory where you want to move the files.
     target_files = move_files(source_directory, target_directory)
     combined_data_structure = format_files(target_directory, target_files)
-    print(combined_data_structure)
     return combined_data_structure
 
 
-def format_files(target_directory_path, file_list2):
+def format_files(target_directory_path, file_list2):  # This function creates a pandas dataframe
     data_structure = []
     columns_to_read = ['PKT', 'Max TemperatureC', 'Mean TemperatureC', 'Min TemperatureC', 'Max Humidity',
                        'Mean Humidity', 'Min Humidity']
@@ -25,7 +24,7 @@ def format_files(target_directory_path, file_list2):
             try:
                 data = pd.read_csv(destination_file_path)
                 data.columns = data.columns.str.strip()
-                data = convert_to_datetime(data)
+                data = convert_to_datetime(data)  # Calling function to convert PKT values to datetime
                 data = data[columns_to_read]
 
             except:
@@ -35,7 +34,7 @@ def format_files(target_directory_path, file_list2):
             try:
                 data = pd.read_csv(destination_file_path, delimiter='\t')
                 data.columns = data.columns.str.strip()
-                data = convert_to_datetime(data)
+                data = convert_to_datetime(data)  # Calling function to convert PKT values to datetime
                 data = data[columns_to_read]
 
             except:
@@ -45,7 +44,7 @@ def format_files(target_directory_path, file_list2):
             try:
                 data = pd.read_excel(destination_file_path)
                 data.columns = data.columns.str.strip()
-                data = convert_to_datetime(data)
+                data = convert_to_datetime(data)  # Calling function to convert PKT values to datetime
                 data = data[columns_to_read]
             except:
                 print(f"The Excel file causing problems is {file}")
@@ -61,4 +60,4 @@ def convert_to_datetime(data):
     return data
 
 
-main_conversion()
+

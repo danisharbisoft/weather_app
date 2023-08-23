@@ -11,7 +11,5 @@ def move_files(source_directory_path, target_directory_path):  # This function m
             destination_file_path = os.path.join(target_directory_path, file)
             shutil.move(source_file_path, destination_file_path)
             print('files moved to target directory')
-    else:
-        print('files already in right directory')
 
     return os.listdir(target_directory_path)
