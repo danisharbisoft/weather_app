@@ -29,7 +29,7 @@ def main():
 
 def parse_arguments():  # Defining Command LIne Operations
     parser = argparse.ArgumentParser(
-        description="A weather app which takes in data(in the form of year/month and passes results")
+        description="A weather app which takes in data(in the form of year/month) and passes results")
 
     parser.add_argument('data_dir', type=str, help='Path to the directory which has the files')
     parser.add_argument('-e', "--yearly_report", type=str,

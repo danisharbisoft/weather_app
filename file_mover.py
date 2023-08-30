@@ -25,5 +25,9 @@ def move_files(source_directory_path, target_directory_path):  # This function m
 
         return os.listdir(target_directory_path)
 
-    except:
-        print('problem here')
+    except FileNotFoundError:
+        print('Source or target directory not found.')
+    except PermissionError:
+        print('Permission denied. Make sure you have the required permissions.')
+    except Exception as e:
+        print(f'An error occurred: {e}')
